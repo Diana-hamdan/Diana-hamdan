@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADHD Brain Reset Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e10;
+    --surface: #17171a;
+    --surface2: #1f1f24;
+    --border: #2a2a30;
+    --accent: #c8f06e;
+    --accent2: #7ee8c8;
+    --accent3: #f0a96e;
+    --accent4: #e87ec8;
+    --text: #f0ede8;
+    --muted: #7a7880;
+    --radius: 16px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(14,14,16,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 28px; height: 58px;
+  }
+  .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 17px; color: var(--accent); letter-spacing: -.02em; }
+  .nav-tabs { display: flex; gap: 4px; }
+  .nav-tab {
+    background: none; border: none; cursor: pointer;
+    color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 13px;
+    padding: 6px 14px; border-radius: 8px; transition: all .18s;
+  }
+  .nav-tab:hover { color: var(--text); background: var(--surface2); }
+  .nav-tab.active { color: var(--bg); background: var(--accent); font-weight: 500; }
+
+  /* MAIN */
+  main { max-width: 780px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* SECTION */
+  .section { display: none; animation: fadeUp .3s ease; }
+  .section.active { display: block; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+  /* HEADER */
+  .page-header { margin-bottom: 36px; }
+  .page-header h1 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(26px, 5vw, 38px); line-height: 1.1; letter-spacing: -.03em; }
+  .page-header p { color: var(--muted); margin-top: 8px; font-size: 14px; }
+  .accent-dot { color: var(--accent); }
+
+  /* STEP CARDS */
+  .steps-grid { display: flex; flex-direction: column; gap: 14px; }
+  .step-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    transition: border-color .2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .step-card::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    border-radius: 3px 0 0 3px;
+  }
+  .step-card:nth-child(1)::before { background: var(--accent); }
+  .step-card:nth-child(2)::before { background: var(--accent2); }
+  .step-card:nth-child(3)::before { background: var(--accent3); }
+  .step-card:nth-child(4)::before { background: var(--accent4); }
+  .step-card:nth-child(5)::before { background: #a8c4ff; }
+
+  .step-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .step-num {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 11px;
+    width: 26px; height: 26px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-card:nth-child(1) .step-num { background: rgba(200,240,110,.15); color: var(--accent); }
+  .step-card:nth-child(2) .step-num { background: rgba(126,232,200,.15); color: var(--accent2); }
+  .step-card:nth-child(3) .step-num { background: rgba(240,169,110,.15); color: var(--accent3); }
+  .step-card:nth-child(4) .step-num { background: rgba(232,126,200,.15); color: var(--accent4); }
+  .step-card:nth-child(5) .step-num { background: rgba(168,196,255,.15); color: #a8c4ff; }
+
+  .step-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px; }
+  .step-sub { color: var(--muted); font-size: 13px; margin-bottom: 14px; font-style: italic; }
+  .step-bullets { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+  .step-bullets li { display: flex; gap: 8px; font-size: 14px; color: #c8c4be; align-items: flex-start; }
+  .step-bullets li::before { content: '→'; color: var(--muted); flex-shrink: 0; margin-top: 1px; }
+
+  /* TEXTAREA */
+  .input-label { font-size: 12px; font-weight: 500; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; margin-bottom: 6px; display: block; }
+  textarea, input[type="text"] {
+    width: 100%; background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 10px;
+    color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px;
+    padding: 12px 14px; resize: vertical; outline: none;
+    transition: border-color .18s; line-height: 1.6;
+  }
+  textarea:focus, input[type="text"]:focus { border-color: var(--accent); }
+  textarea { min-height: 100px; }
+
+  /* PRIORITY DISPLAY */
+  .priority-display {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px 16px; min-height: 44px; font-size: 18px; font-weight: 500;
+    font-family: 'Syne', sans-serif; color: var(--accent); letter-spacing: -.01em;
+    margin-top: 8px;
+  }
+  .priority-display.empty { color: var(--muted); font-size: 14px; font-weight: 400; font-family: 'DM Sans', sans-serif; font-style: italic; }
+
+  /* ENERGY BUTTONS */
+  .energy-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+  .energy-btn {
+    flex: 1; min-width: 120px;
+    background: var(--surface2); border: 1.5px solid var(--border);
+    border-radius: 12px; padding: 14px 12px;
+    cursor: pointer; transition: all .18s; text-align: center;
+    color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px;
+  }
+  .energy-btn .e-emoji { font-size: 24px; display: block; margin-bottom: 6px; }
+  .energy-btn .e-label { font-weight: 500; display: block; margin-bottom: 4px; }
+  .energy-btn .e-hint { color: var(--muted); font-size: 12px; line-height: 1.4; }
+  .energy-btn:hover, .energy-btn.selected { border-color: var(--accent); background: rgba(200,240,110,.07); }
+  .energy-btn.selected .e-label { color: var(--accent); }
+
+  /* TIMER */
+  .timer-area { margin-top: 12px; }
+  .timer-display {
+    font-family: 'Syne', sans-serif; font-size: 48px; font-weight: 800;
+    color: var(--accent); letter-spacing: -.04em; text-align: center;
+    padding: 20px 0 14px;
+  }
+  .timer-btns { display: flex; gap: 10px; justify-content: center; }
+  .btn {
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px;
+    padding: 10px 22px; border-radius: 10px; cursor: pointer; transition: all .18s;
+    font-weight: 500;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .btn.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  .btn.primary:hover { background: #d4f47a; }
+  .task-input-row { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px; }
+  .task-input-row input { flex: 1; min-height: 40px; resize: none; }
+
+  /* WIN BOX */
+  .win-box {
+    background: rgba(200,240,110,.08); border: 1px solid rgba(200,240,110,.25);
+    border-radius: 10px; padding: 14px 16px; font-size: 14px; color: var(--accent);
+    margin-top: 10px; min-height: 44px;
+    font-style: italic;
+  }
+  .win-box.empty { color: var(--muted); font-style: normal; }
+
+  /* TRACKER */
+  .tracker-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .week-nav { display: flex; gap: 8px; align-items: center; }
+  .week-nav button { background: var(--surface2); border: 1px solid var(--border); color: var(--text); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: all .18s; }
+  .week-nav button:hover { border-color: var(--accent); }
+  .week-label { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; min-width: 140px; text-align: center; }
+
+  .tracker-table { width: 100%; border-collapse: collapse; }
+  .tracker-table th {
+    font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: .06em;
+    text-transform: uppercase; padding: 8px 6px; text-align: center;
+  }
+  .tracker-table th:first-child { text-align: left; padding-left: 14px; }
+  .tracker-table td { padding: 6px; text-align: center; vertical-align: middle; }
+  .tracker-table td:first-child {
+    text-align: left; padding-left: 14px; font-size: 13px; color: #c8c4be;
+    font-weight: 400; padding-right: 12px;
+  }
+  .tracker-table tr { border-bottom: 1px solid var(--border); }
+  .tracker-table tr:last-child { border-bottom: none; }
+
+  .check-cell {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: var(--surface2); border: 1.5px solid var(--border);
+    cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+    transition: all .15s; font-size: 16px; color: transparent;
+    margin: 2px;
+  }
+  .check-cell.done { background: rgba(200,240,110,.15); border-color: var(--accent); color: var(--accent); }
+  .check-cell:hover { border-color: var(--muted); }
+
+  .tracker-table-wrap {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    overflow-x: auto; padding: 4px 0;
+  }
+
+  /* WIN OF WEEK */
+  .win-of-week {
+    margin-top: 20px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 20px 22px;
+  }
+  .win-of-week label { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; display: block; margin-bottom: 10px; }
+
+  /* PROGRESS BAR */
+  .week-progress { margin-top: 16px; }
+  .progress-row { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
+  .progress-bar-bg { flex: 1; height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width .3s; }
+  .progress-label { font-size: 12px; color: var(--muted); min-width: 36px; text-align: right; }
+
+  /* QUOTE */
+  .quote-strip {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 20px 24px; margin-bottom: 28px; display: flex; gap: 14px; align-items: flex-start;
+  }
+  .quote-mark { font-family: 'Syne', sans-serif; font-size: 40px; line-height: .8; color: var(--accent); flex-shrink: 0; margin-top: 4px; }
+  .quote-text { font-size: 15px; font-style: italic; color: #c8c4be; line-height: 1.6; }
+
+  /* SECTION DIVIDER */
+  .divider { height: 1px; background: var(--border); margin: 22px 0; }
+
+  /* SAVE INDICATOR */
+  .save-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); margin-left: 6px; opacity: 0; transition: opacity .3s; vertical-align: middle; }
+  .save-dot.show { opacity: 1; }
+
+  /* RESPONSIVE */
+  @media (max-width: 520px) {
+    nav { padding: 0 14px; }
+    main { padding: 24px 14px 60px; }
+    .energy-btns { flex-direction: column; }
+    .energy-btn { min-width: unset; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">🧠 ADHD Reset</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showSection('checklist')">Checklist</button>
+    <button class="nav-tab" onclick="showSection('tracker')">Tracker</button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- CHECKLIST SECTION -->
+  <div class="section active" id="section-checklist">
+
+    <div class="page-header">
+      <h1>Brain Reset<span class="accent-dot">.</span></h1>
+      <p>5 steps · under 20 minutes · go from overwhelmed to clear <span class="save-dot" id="save-dot"></span></p>
+    </div>
+
+    <div class="quote-strip">
+      <div class="quote-mark">"</div>
+      <div class="quote-text">You don't have to do it perfectly. You just have to do it.</div>
+    </div>
+
+    <div class="steps-grid">
+
+      <!-- STEP 1 -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-num">01</div>
+          <div class="step-title">Brain Dump</div>
+        </div>
+        <div class="step-sub">Get it ALL out of your head — 3 minutes max</div>
+        <ul class="step-bullets">
+          <li>Write every task, worry, idea — no filter</li>
+          <li>Do NOT organise yet. Just dump.</li>
+        </ul>
+        <label class="input-label">Your brain dump</label>
+        <textarea id="brain-dump" placeholder="Everything in your head right now... tasks, worries, random thoughts, ideas..." rows="5" oninput="save('brain-dump', this.value)"></textarea>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-num">02</div>
+          <div class="step-title">Pick Your ONE Thing</div>
+        </div>
+        <div class="step-sub">Not a list. ONE priority only.</div>
+        <ul class="step-bullets">
+          <li>Look at your brain dump above</li>
+          <li>Ask: "If I only did one thing today, what matters most?"</li>
+        </ul>
+        <label class="input-label">My one priority today</label>
+        <div class="task-input-row">
+          <input type="text" id="one-thing" placeholder="Type it here..." oninput="save('one-thing', this.value); updatePriority()">
+        </div>
+        <div class="priority-display empty" id="priority-big">Your priority will appear here</div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-num">03</div>
+          <div class="step-title">Check Your Energy</div>
+        </div>
+        <div class="step-sub">Work with your brain state, not against it.</div>
+        <div class="energy-btns">
+          <button class="energy-btn" id="energy-high" onclick="setEnergy('high')">
+            <span class="e-emoji">⚡</span>
+            <span class="e-label">High energy</span>
+            <span class="e-hint">Tackle the hard thing NOW</span>
+          </button>
+          <button class="energy-btn" id="energy-med" onclick="setEnergy('med')">
+            <span class="e-emoji">🌤️</span>
+            <span class="e-label">Medium energy</span>
+            <span class="e-hint">Emails, admin, small tasks</span>
+          </button>
+          <button class="energy-btn" id="energy-low" onclick="setEnergy('low')">
+            <span class="e-emoji">🌙</span>
+            <span class="e-label">Low energy</span>
+            <span class="e-hint">Rest, walk, body double first</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-num">04</div>
+          <div class="step-title">5-Minute Starter Ritual</div>
+        </div>
+        <div class="step-sub">Beat task paralysis with a tiny start.</div>
+        <ul class="step-bullets">
+          <li>Set the timer below</li>
+          <li>Tell yourself: "I only have to do 5 minutes"</li>
+          <li>Start. (You'll usually keep going — but 5 min still counts)</li>
+        </ul>
+        <div class="timer-area">
+          <div class="timer-display" id="timer-display">5:00</div>
+          <div class="timer-btns">
+            <button class="btn primary" id="timer-btn" onclick="toggleTimer()">Start Timer</button>
+            <button class="btn" onclick="resetTimer()">Reset</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-num">05</div>
+          <div class="step-title">Wind Down & Reset</div>
+        </div>
+        <div class="step-sub">End the day with intention, not guilt.</div>
+        <label class="input-label">Evening brain dump</label>
+        <textarea id="wind-down" placeholder="Anything left in your head? Get it out here..." rows="3" oninput="save('wind-down', this.value)"></textarea>
+        <div class="divider"></div>
+        <label class="input-label">One thing I DID do today 🎉</label>
+        <input type="text" id="todays-win" placeholder="Something you completed or showed up for..." oninput="save('todays-win', this.value); updateWin()">
+        <div class="win-box empty" id="win-display">Your win will appear here</div>
+        <div class="divider"></div>
+        <label class="input-label">My ONE priority for tomorrow</label>
+        <input type="text" id="tomorrow" placeholder="Just one thing..." oninput="save('tomorrow', this.value)">
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TRACKER SECTION -->
+  <div class="section" id="section-tracker">
+
+    <div class="page-header">
+      <h1>Weekly Tracker<span class="accent-dot">.</span></h1>
+      <p>Use every Sunday · 20 minutes · no perfection required <span class="save-dot" id="save-dot2"></span></p>
+    </div>
+
+    <div class="tracker-header">
+      <div class="week-label" id="week-label">Loading...</div>
+      <div class="week-nav">
+        <button onclick="changeWeek(-1)">‹</button>
+        <button onclick="changeWeek(1)">›</button>
+      </div>
+    </div>
+
+    <div class="tracker-table-wrap">
+      <table class="tracker-table">
+        <thead>
+          <tr>
+            <th>Habit</th>
+            <th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th>
+          </tr>
+        </thead>
+        <tbody id="tracker-body">
+        </tbody>
+      </table>
+    </div>
+
+    <div class="week-progress">
+      <label class="input-label">This week's completion</label>
+      <div class="progress-row">
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+        </div>
+        <div class="progress-label" id="progress-label">0%</div>
+      </div>
+    </div>
+
+    <div class="win-of-week">
+      <label for="week-win">This week's win</label>
+      <textarea id="week-win" rows="3" placeholder="Write one thing you're proud of this week..." oninput="saveWeekWin(this.value)"></textarea>
+    </div>
+
+  </div>
+
+</main>
+
+<script>
+// ─── PERSISTENCE KEY PREFIX ───
+const KEY = 'adhd_reset_';
+
+const HABITS = [
+  'Brain dump done',
+  'ONE priority set',
+  'Energy checked',
+  '5-min starter used',
+  'Wind-down done',
+  'Celebrated a win'
+];
+const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+// ─── NAVIGATION ───
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  const tabs = document.querySelectorAll('.nav-tab');
+  tabs.forEach(t => { if(t.textContent.toLowerCase().includes(id.split('-')[0])) t.classList.add('active'); });
+  if(id === 'tracker') renderTracker();
+}
+
+// ─── SAVE / LOAD ───
+function save(key, val) {
+  localStorage.setItem(KEY + key, val);
+  flashSave();
+}
+function load(key, fallback) {
+  return localStorage.getItem(KEY + key) ?? fallback ?? '';
+}
+function flashSave() {
+  document.querySelectorAll('.save-dot').forEach(d => {
+    d.classList.add('show');
+    clearTimeout(d._t);
+    d._t = setTimeout(() => d.classList.remove('show'), 1200);
+  });
+}
+
+// ─── RESTORE CHECKLIST ───
+function restoreChecklist() {
+  const fields = ['brain-dump','one-thing','wind-down','todays-win','tomorrow'];
+  fields.forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.value = load(id);
+  });
+  updatePriority();
+  updateWin();
+  const energy = load('energy');
+  if(energy) setEnergy(energy, false);
+}
+
+function updatePriority() {
+  const val = document.getElementById('one-thing').value.trim();
+  const el = document.getElementById('priority-big');
+  if(val) { el.textContent = val; el.classList.remove('empty'); }
+  else { el.textContent = 'Your priority will appear here'; el.classList.add('empty'); }
+}
+function updateWin() {
+  const val = document.getElementById('todays-win').value.trim();
+  const el = document.getElementById('win-display');
+  if(val) { el.textContent = '🎉 ' + val; el.classList.remove('empty'); }
+  else { el.textContent = 'Your win will appear here'; el.classList.add('empty'); }
+}
+
+// ─── ENERGY ───
+function setEnergy(level, doSave = true) {
+  document.querySelectorAll('.energy-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('energy-' + level)?.classList.add('selected');
+  if(doSave) save('energy', level);
+}
+
+// ─── TIMER ───
+let timerInterval = null;
+let timerSeconds = 300;
+let timerRunning = false;
+
+function pad(n) { return String(n).padStart(2,'0'); }
+function renderTimer() {
+  const m = Math.floor(timerSeconds / 60);
+  const s = timerSeconds % 60;
+  document.getElementById('timer-display').textContent = pad(m) + ':' + pad(s);
+}
+function toggleTimer() {
+  if(timerRunning) {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    document.getElementById('timer-btn').textContent = 'Resume';
+  } else {
+    timerRunning = true;
+    document.getElementById('timer-btn').textContent = 'Pause';
+    timerInterval = setInterval(() => {
+      timerSeconds--;
+      renderTimer();
+      if(timerSeconds <= 0) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        document.getElementById('timer-btn').textContent = 'Start Timer';
+        document.getElementById('timer-display').textContent = 'Done! ✓';
+      }
+    }, 1000);
+  }
+}
+function resetTimer() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerSeconds = 300;
+  renderTimer();
+  document.getElementById('timer-btn').textContent = 'Start Timer';
+}
+
+// ─── TRACKER ───
+let currentWeekOffset = 0;
+
+function getWeekKey(offset) {
+  const d = new Date();
+  d.setDate(d.getDate() - d.getDay() + 1 + offset * 7);
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return `week_${y}_${m}_${day}`;
+}
+function getWeekLabel(offset) {
+  const d = new Date();
+  d.setDate(d.getDate() - d.getDay() + 1 + offset * 7);
+  const start = new Date(d);
+  const end = new Date(d); end.setDate(end.getDate() + 6);
+  const fmt = (x) => x.toLocaleDateString('en-GB', { day:'numeric', month:'short' });
+  return fmt(start) + ' – ' + fmt(end);
+}
+function getTrackerData(weekKey) {
+  const raw = localStorage.getItem(KEY + weekKey);
+  if(raw) try { return JSON.parse(raw); } catch(e){}
+  const empty = {};
+  HABITS.forEach((h,hi) => { empty[hi] = {}; DAYS.forEach((_,di) => { empty[hi][di] = false; }); });
+  return empty;
+}
+function saveTrackerData(weekKey, data) {
+  localStorage.setItem(KEY + weekKey, JSON.stringify(data));
+}
+function toggleCell(hi, di) {
+  const weekKey = getWeekKey(currentWeekOffset);
+  const data = getTrackerData(weekKey);
+  data[hi][di] = !data[hi][di];
+  saveTrackerData(weekKey, data);
+  renderTracker();
+  flashSave();
+}
+function updateProgress(data) {
+  let total = 0, done = 0;
+  HABITS.forEach((h,hi) => DAYS.forEach((_,di) => { total++; if(data[hi][di]) done++; }));
+  const pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = pct + '%';
+}
+function saveWeekWin(val) {
+  const weekKey = getWeekKey(currentWeekOffset);
+  localStorage.setItem(KEY + weekKey + '_win', val);
+  flashSave();
+}
+function renderTracker() {
+  const weekKey = getWeekKey(currentWeekOffset);
+  document.getElementById('week-label').textContent = getWeekLabel(currentWeekOffset);
+  const data = getTrackerData(weekKey);
+  const tbody = document.getElementById('tracker-body');
+  tbody.innerHTML = '';
+  HABITS.forEach((habit, hi) => {
+    const tr = document.createElement('tr');
+    const td0 = document.createElement('td');
+    td0.textContent = habit;
+    tr.appendChild(td0);
+    DAYS.forEach((_, di) => {
+      const td = document.createElement('td');
+      const cell = document.createElement('div');
+      cell.className = 'check-cell' + (data[hi][di] ? ' done' : '');
+      cell.textContent = data[hi][di] ? '✓' : '';
+      cell.onclick = () => toggleCell(hi, di);
+      td.appendChild(cell);
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+  updateProgress(data);
+  const winVal = localStorage.getItem(KEY + weekKey + '_win') ?? '';
+  document.getElementById('week-win').value = winVal;
+}
+function changeWeek(dir) {
+  currentWeekOffset += dir;
+  renderTracker();
+}
+
+// ─── INIT ───
+restoreChecklist();
+renderTimer();
+</script>
+</body>
+</html>
